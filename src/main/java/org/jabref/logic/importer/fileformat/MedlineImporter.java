@@ -832,6 +832,7 @@ public class MedlineImporter extends Importer implements Parser {
     }
 
     private void addArticleIdList(Map<Field, String> fields, List<ArticleId> articleIdList) {
+        // "url" IDs are handled separately to ensure explicit URLs are preserved.
         articleIdList.forEach(id -> {
             if (!id.idType().isBlank() && !"url".equals(id.idType())) {
                 if ("pubmed".equals(id.idType())) {
@@ -849,7 +850,7 @@ public class MedlineImporter extends Importer implements Parser {
 
         if (!fields.containsKey(StandardField.URL) && fields.containsKey(StandardField.PMID)) {
             String pmid = fields.get(StandardField.PMID);
-            fields.put(StandardField.URL, String.format("https://pubmed.ncbi.nlm.nih.gov/%s/", pmid));
+            fields.put(StandardField.URL, "https://pubmed.ncbi.nlm.nih.gov/%s/".formatted(pmid));
         }
     }
 
